@@ -85,3 +85,27 @@ Using bold in html: `<b>Text</b>`.
 <? $article->premium->sameas(true) ?>
 
 <? $view->article->is() /* check level 0 variable*/ ?>
+
+$view
+    $view (container)
+        $render($tpl, $data) + engines
+
+$tpl { render}
+
+engine php
+
+
+Fogio\Front\Module extends Fogio\Container\Container {
+    _hook() {
+        $front = $this;
+        return $this->hook = new Container([
+            'app' => function ($c) use ($front) {
+                return $c->app = 
+            }
+        ]) 
+    }
+
+
+}
+
+$view->render->php->render();
