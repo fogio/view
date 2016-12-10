@@ -29,8 +29,8 @@ class FvtVariable implements \Iterator, \ArrayAccess
     {
         return new FvtVariable(
             $this->_____view,
-            $this->_____val,
-            array_merge($this->_____filter, [['filter' => $name, 'arg' => $args]])
+            call_user_func_array([$this->_____view, $name],  array_merge([$this->_____val], $args)),
+            $this->_____filter
         );
     }
 

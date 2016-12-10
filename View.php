@@ -94,18 +94,84 @@ $tpl { render}
 
 engine php
 
+<?php
 
-Fogio\Front\Module extends Fogio\Container\Container {
-    _hook() {
-        $front = $this;
-        return $this->hook = new Container([
-            'app' => function ($c) use ($front) {
-                return $c->app = 
-            }
-        ]) 
+namespace Fogio\Front;
+
+class Module extends Fogio\Container\Container {
+
+    public function _hook() {
+
+        return $this->hook = (new Container())->__invoke([
+
+            'app' => function ($c) {
+
+                return $c->app = (new Container())->__invoke([
+
+                    ':db' => function ($c, $db)  {
+                        $db([
+                            'event' => Fogio\Front\Model\Event::Class,
+                        ]);
+                    },
+
+                    ':view' => function ($c, $view)  {
+                        $view([
+                            ':cut' => function($view, $val, $length = '100', $end = '...') {
+                                // return ...;
+                            },
+                        ]);
+                    },
+
+                ]);
+
+            },
+
+        ]);
     }
 
 
 }
 
-$view->render->php->render();
+$view->render->php->render();?>
+
+// base.html
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php $view->block('head') ?>
+            <link rel="stylesheet" href="style.css" />
+            <title><?php $view->valblock('title') ?> - My Webpage</title>
+        <?php $view->endblock() ?>
+    </head>
+    <body>
+        <div id="content"><?php $view->valblock('content') ?></div>
+        <div id="footer">
+            <?php $view->block('footer') ?>
+                &copy; Copyright 2011 by <a href="http://domain.invalid/">you</a>.
+            <?php $view->endblock() ?>
+        </div>
+    </body>
+</html>
+
+
+<?php $view->extends('base.html') ?>
+
+<?php $view->block('title') ?>Index<?php $view->endblock() ?>
+<?php $view->block('head') ?>
+    {{ parent() }}
+    <style type="text/css">
+        .important { color: #336699; }
+    </style>
+<?php $view->endblock() ?>
+<?php $view->block('head') ?>
+    <h1>Index</h1>
+    <p class="important">
+        Welcome on my awesome homepage.
+    </p>
+<?php $view->endblock() ?>
+
+
+
+<?php $view->head->block->start() ?>
+    <link rss/>
+<?php $view->head->block->stop() ?>

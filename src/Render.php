@@ -8,7 +8,7 @@ class Render extends Container
 {
     protected $_view;
     protected $_resolver;
-    protected $_stack = [];
+    protected $_queue = [];
     protected $_content;
     protected $_context;
 
@@ -26,21 +26,21 @@ class Render extends Container
         return $this;
     }
 
-    public function push($template, $data = null)
+    public function append($template, $data = null)
     {
-        $this->_stack[] = ['template' => $template, 'data' => $data];
+        $this->_queue[] = ['template' => $template, 'data' => $data];
     }
 
     public function unshift($template, $data = null)
     {
-        array_unshift($this->_stack, ['template' => $template, 'data' => $data]);
+        array_unshift($this->_queue, ['template' => $template, 'data' => $data]);
 
         return $this;
     }
 
     public function shift()
     {
-        return array_shift($this->_stack);
+        return array_shift($this->_queue);
     }
 
     public function getContent()
