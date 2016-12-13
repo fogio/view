@@ -163,7 +163,7 @@ $view->render->php->render();?>
         .important { color: #336699; }
     </style>
 <?php $view->endblock() ?>
-<?php $view->block('head') ?>
+<?php $view->block('content') ?>
     <h1>Index</h1>
     <p class="important">
         Welcome on my awesome homepage.
